@@ -44,7 +44,7 @@ class DummyClass extends XotBasePanel {
 	  return [];
 	}
 
-	public static function search(){
+	public function search(){
 		return [];
 	}
 

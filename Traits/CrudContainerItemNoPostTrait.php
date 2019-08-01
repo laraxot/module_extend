@@ -428,6 +428,11 @@ trait CrudContainerItemNoPostTrait{
 		\Session::flash('status', $status);
 	}//end detach
 	
+	public static function destroy(Request $request,$container,$item){
+		$item->delete();// da aggiungere pivot_id
+		$status='eliminato';
+		\Session::flash('status', $status);
+	}//end detach
 	
 
 
