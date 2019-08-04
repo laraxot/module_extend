@@ -25,7 +25,7 @@ use Modules\Extend\Services\StubService;
 
 trait CrudContainerItemNoPostTrait{
 
-	public static function index(Request $request,$container,$item){
+	public function index(Request $request,$container,$item){
 
 		$params = \Route::current()->parameters();
 		if($container===false){
@@ -37,61 +37,20 @@ trait CrudContainerItemNoPostTrait{
 			}
 		}
 		if($item===false){
-			//$row=$this->getXotModel($container);
 			$row=self::getXotModel($container);
 			$rows=$row;
 		}else{
 			$types = camel_case(str_plural($container));
             $rows = $item->$types();
-            //ddd($rows);
-
-            //$pivot_class=$rows->getPivotClass();
-			//$foreign_pivot_key_name=$rows->getForeignPivotKeyName();
-			//$pivot=new $pivot_class;
-			//$panel=StubService::getByModel($pivot,'panel',true);
-			//$panel->foreign_pivot_key_name=$foreign_pivot_key_name;
-			$row=$rows->getRelated(); //???? 
+			$row=$rows->getRelated(); 
 		}
-		/*
-		if($request->ajax() && $request->has('query') ){
-			$lang=\App::getLocale();
-			$q=$request->input('query');
-			$rows=Post::select('post_id as id','title as label')
-						->where('title','like','%'.$q.'%')
-						->where('post_type','cuisine_cat')
-						->where('lang',$lang)
-						->limit(10)
-						->get()
-						->toJson();
-			die($rows);
-		}
-		*/
-		
 		$panel=StubService::getByModel($row,'panel',true);
 		$policy=StubService::getByModel($row,'policy',true);
-		//$rows=$rows->with($panel->with());
-		///------- search test 
-		/*
-		$rows = $rows->whereHas('post', function (Builder $query) {
-    		$query->where('title', 'like', '9%');
-		});
-		ddd($panel->search());
-		fields : funzione
-		with : funzione
-		search : ??
-		*/
-		//--------------------------------
-		//$rows=$panel->indexQuery($request,$rows);
 		$rows=$panel->indexRows($request,$rows);
 		if($panel->force_exit){
 			return $panel->out;
 		}
-
-
-
 		$rows=$rows->paginate(20);
-		
-		
 		return ThemeService::view()
 				->with('rows',$rows)
 				->with('row',$row)
