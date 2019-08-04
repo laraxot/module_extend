@@ -3,13 +3,11 @@ namespace Modules\Extend\Services;
 
 use Route;
 
-class RouteService
-{
+class RouteService{
     protected static $namespace_start = '';
     protected static $curr = null;
 
-    public static function getGroupOpts($v, $namespace)
-    {
+    public static function getGroupOpts($v, $namespace){
         $group_opts = [
             'prefix' => self::getPrefix($v, $namespace),
             'namespace' => self::getNamespace($v, $namespace),
@@ -19,8 +17,7 @@ class RouteService
         return $group_opts;
     }
 
-    public static function getPrefix($v, $namespace)
-    {
+    public static function getPrefix($v, $namespace){
         if (\in_array('prefix', \array_keys($v), true)) {
             return $v['prefix'];
         }
@@ -44,8 +41,7 @@ class RouteService
         return $prefix;
     }
 
-    public static function getAs($v, $namespace)
-    {
+    public static function getAs($v, $namespace){
         if (\in_array('as', \array_keys($v), true)) {
             return $v['as'];
         }
@@ -59,8 +55,7 @@ class RouteService
         return $as.'.';
     }
 
-    public static function getNamespace($v, $namespace)
-    {
+    public static function getNamespace($v, $namespace){
         if (\in_array('namespace', \array_keys($v), true)) {
             return $v['namespace'];
         }
@@ -76,8 +71,7 @@ class RouteService
         return studly_case($namespace);
     }
 
-    public static function getAct($v, $namespace)
-    {
+    public static function getAct($v, $namespace){
         if (\in_array('act', \array_keys($v), true)) {
             return $v['act'];
         }
@@ -341,11 +335,16 @@ class RouteService
         $act=last(explode('.',$routename));
         if($act=='edit') $act='index_edit';
         else $act='index';
+        //*
         $tmp=[];
         if(in_admin()){ $tmp[]='admin'; }
         for($i=0;$i<=$container_i+1;$i++){  $tmp[]='container'.$i; }
         $tmp[]=$act;
         $rountename_son=implode('.',$tmp);
+        //*/
+        //$rountename_son=in_admin()?'admin.':'';
+        //$rountename_son.=str_repeat()
+        //$rountename_son=str_repeat() //da fare
         return $rountename_son;
     }  
 
@@ -379,7 +378,9 @@ class RouteService
         if(count($items)==0) return [];
         $tabs=[];
 
+
         $cont_i=RouteService::containerN(['model'=>$model]);
+        //echo('[ '.$model.']['.$cont_i.']');
 
         if(isset($params['item'.$cont_i]) ) {
         foreach($tabs_name as $k=>$v){
