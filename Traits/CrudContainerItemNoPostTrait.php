@@ -174,7 +174,6 @@ trait CrudContainerItemNoPostTrait{
 		if(is_object($item)){ //l'oggetto figlio potrebbe avere un modello diverso
 			$row=$item->$types()->getRelated();
 		}else{ 
-			//$row=$this->getXotModel($container); 
 			$row=xotModel($container);
 		}
 		
@@ -192,6 +191,11 @@ trait CrudContainerItemNoPostTrait{
 				$data=array_merge($data,$data['post']); //forzatura
 			}
 			$item_new->post()->create($data);
+		}
+		$panel=StubService::getByModel($item_new,'panel');
+
+		if(method_exists($panel, 'storeCallback')){
+			$item_new=$panel->storeCallback(['row'=>$item_new,'data'=>$data]);
 		}
 		//*/
 		self::manageRelationships(['model'=>$item_new,'data'=>$data,'act'=>'store','container'=>$container,'item'=>$item,]);
@@ -285,12 +289,12 @@ trait CrudContainerItemNoPostTrait{
 	}
 
 
-	public static function indexEdit(Request $request,$container,$item){
+	public function indexEdit(Request $request,$container,$item){
 		if($request->getMethod()=='POST'){
 			return $this->indexUpdate($request,$container,$item);
 		}
-		//return $this->index($request,$container,$item);
-		return self::index($request,$container,$item);
+		return $this->index($request,$container,$item);
+		//return self::index($request,$container,$item);
 	}
 
 	public static function indexUpdate(Request $request,$container,$item){

@@ -282,29 +282,41 @@ if (!\function_exists('transFields')) {
     function transFields($params){
         extract($params);
         $ris=new \stdClass();
+
         $start=0;
         if(in_admin()){
             $start=1;
         }
        
-        $name=bracketsToDotted($name);
+        $ris->name_dot=bracketsToDotted($name);
+
         $pattern= '/\.[0-9]+\./m';
-        $name=preg_replace($pattern,'.',$name);
+        $ris->name_dot=preg_replace($pattern,'.',$ris->name_dot);
         
         list($ns,$key)=explode('::',$view);
         $view_noact=$ns.'::'.implode('.',array_slice(explode('.',$key),$start,-1));
 
+        $trans_fields=['label','placeholder','help'];
+        foreach($trans_fields as $tf){
+            $trans=$view_noact.'.field.'.$ris->name_dot.'_'.$tf;
+            $ris->$tf=isset($$tf)?$$tf:trans($trans);
+            if($ris->$tf == $trans) $ris->$tf='';
+        }
 
-
+        /*
         $trans=$view_noact.'.field.'.$name;
         $ris->label=isset($label)?$label:trans($trans);
         //if($ris->label==$trans) $ris->label=$name;
         $trans=$view_noact.'.field.'.$name.'_placeholder';
         $ris->placeholder=trans($trans);
         if($ris->placeholder==$trans) $ris->placeholder=' ';
+        */
+
         $attributes=$params;
         $attrs_default=['class' => 'form-control','placeholder'=>$ris->placeholder];
-        $ris->attributes=array_merge($attrs_default, $attributes);
+        $ris->attributes=collect(array_merge($attrs_default, $attributes))
+                        ->only('class','placeholder')->all();
+        $ris->params=$params;
         return $ris;
     }
 }
