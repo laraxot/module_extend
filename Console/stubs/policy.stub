@@ -1,0 +1,173 @@
+<?php
+
+namespace DummyNamespace;
+
+use Illuminate\Auth\Access\HandlesAuthorization;
+use NamespacedDummyUserModel as User;
+use NamespacedDummyModel as Post; 
+
+use Modules\Xot\Traits\XotBasePolicyTrait;
+
+class DummyClass
+{
+    //use HandlesAuthorization; e' dentro XotBasePolicyTrait
+    use XotBasePolicyTrait; 
+    
+    public function before($user, $ability)
+    {
+        if (isset($user->perm) && $user->perm->perm_type >= 5) {  //superadmin
+            return true;
+        }
+    }
+
+    /**
+     * Determine whether the user can view any DocDummyPluralModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @return mixed
+     */
+    public function index(User $user, Post $post)
+    {
+        return true;
+    }
+
+    /**
+     * Determine whether the user can view any DocDummyPluralModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @return mixed
+     */
+    public function viewAny(User $user)
+    {
+        //
+    }
+
+    /**
+     * Determine whether the user can show the DocDummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function show(User $user, Post $post)
+    {
+        //
+    }
+
+    /**
+     * Determine whether the user can view the DocDummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function view(User $user, Post $post)
+    {
+        //
+    }
+
+    /**
+     * Determine whether the user can create DocDummyPluralModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @return mixed
+     */
+    public function create(User $user)
+    {
+        //
+    }
+    /**
+     * Determine whether the user can edit the DocDummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function edit(User $user, Post $post)
+    {
+        if ($post->created_by == $user->handle) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function indexEdit(User $user, Post $post)
+    {
+        if ($post->created_by == $user->handle) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Determine whether the user can update the DocDummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function update(User $user, Post $post)
+    {
+        if ($post->created_by == $user->handle) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function destroy(User $user, Post $post)
+    {
+        if ($post->created_by == $user->handle) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can delete the DocDummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function delete(User $user, Post $post)
+    {
+        if ($post->created_by == $user->handle) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can restore the DocDummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function restore(User $user, Post $post)
+    {
+        if ($post->created_by == $user->handle) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can permanently delete the DocDummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function forceDelete(User $user, Post $post)
+    {
+        //
+    }
+}
