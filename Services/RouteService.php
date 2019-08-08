@@ -386,6 +386,7 @@ class RouteService{
         if($cont_i==0){
             $tmp1=new \stdClass();
             if($act=='index_edit') $act='edit';
+            if($act=='index') $act='show';
             $tmp1->title=$act;
             $tmp1->routename=(in_admin()?'admin.':'').'container0.'.$act;
             $tmp1->url=route($tmp1->routename,$params);
