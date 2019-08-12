@@ -186,6 +186,18 @@ trait CrudContainerItemNoPostTrait{
 			;
 	}
 
+	public function formatData($params){
+		extract($params);
+		$panel=StubService::getByModel(new $class,'panel');
+		//ddd($panel->fields());
+		//ddd($data);
+		$fields=collect($panel->fields())->filter(function ($item) use ($data){
+			return in_array($item->name,array_keys($data));
+		})->all();
+		//ddd($fields);
+		return $data;
+	}
+
 	public function store(Request $request,$container,$item){
 		$data=$request->all();
 
@@ -219,6 +231,9 @@ trait CrudContainerItemNoPostTrait{
 			if(isset($data['post'])){
 				$data=array_merge($data,$data['post']); //forzatura
 			}
+
+			$data=$this->formatData(['data'=>$data,'class'=>Post::class]);
+			//ddd($data);
 			$item_new->post()->create($data);
 		}
 		$panel=StubService::getByModel($item_new,'panel');
