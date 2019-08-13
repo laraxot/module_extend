@@ -21,6 +21,10 @@ class ImageController extends Controller{
 		return $this->$last_item($request);
 	} //
 
+    public function store(Request $request){
+        return $this->canvas($request);
+    }
+
 	public function canvas(Request $request) {
         $data = $request->all();
         $path_parts = \pathinfo($data['name']);
