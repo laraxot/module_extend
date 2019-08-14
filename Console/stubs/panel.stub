@@ -39,8 +39,7 @@ class DummyClass extends XotBasePanel {
 	*
 	* @var array
 	*/
-	public static function with()
-	{
+	public static function with(){
 	  return [];
 	}
 
@@ -112,8 +111,7 @@ class DummyClass extends XotBasePanel {
 
 
 
-	public static function fields()
-	{
+	public static function fields(){
 		return dummy_fields;
 	}
 	 
@@ -136,8 +134,7 @@ class DummyClass extends XotBasePanel {
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return array
 	 */
-	public function cards(Request $request)
-	{
+	public function cards(Request $request){
 		return [];
 	}
 
@@ -147,8 +144,7 @@ class DummyClass extends XotBasePanel {
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return array
 	 */
-	public function filters(Request $request=null)
-	{
+	public function filters(Request $request=null){
 		return [];
 	}
 
@@ -158,8 +154,7 @@ class DummyClass extends XotBasePanel {
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return array
 	 */
-	public function lenses(Request $request)
-	{
+	public function lenses(Request $request){
 		return [];
 	}
 
@@ -169,8 +164,7 @@ class DummyClass extends XotBasePanel {
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return array
 	 */
-	public function actions(Request $request=null)
-	{
+	public function actions(Request $request=null){
 		return [];
 	}
 

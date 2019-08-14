@@ -302,7 +302,7 @@ if (!\function_exists('transFields')) {
             $ris->$tf=isset($$tf)?$$tf:trans($trans);
             if($ris->$tf == $trans) $ris->$tf='';
         }
-
+ 
         /*
         $trans=$view_noact.'.field.'.$name;
         $ris->label=isset($label)?$label:trans($trans);
@@ -315,7 +315,7 @@ if (!\function_exists('transFields')) {
         $attributes=$params;
         $attrs_default=['class' => 'form-control','placeholder'=>$ris->placeholder];
         $ris->attributes=collect(array_merge($attrs_default, $attributes))
-                        ->only('class','placeholder')->all();
+                        ->only('class','placeholder','readonly')->all();
         $ris->params=$params;
         return $ris;
     }
@@ -344,6 +344,9 @@ if (!\function_exists('debug_getter_obj')){
                 'getGlobalScope',
                 'getActualClassNameForMorph',
                 'getRelation',
+                //---------
+                'getDataStartAttribute',
+                'getDataAttribute',
                 //--altri errori --
             ];
             return (Str::startsWith($item,'get')  && !in_array($item,$exclude)  );

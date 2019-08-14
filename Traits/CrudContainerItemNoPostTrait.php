@@ -26,7 +26,6 @@ use Modules\Extend\Services\StubService;
 trait CrudContainerItemNoPostTrait{
 
 	public function index(Request $request,$container,$item){
-
 		$params = \Route::current()->parameters();
 		if($container===false){
 			$home_view=$params['module'].'::admin.index';
@@ -58,8 +57,36 @@ trait CrudContainerItemNoPostTrait{
 				;
 	}
 
+
+	public function create(Request $request,$container,$item){
+		$types = camel_case(str_plural($container));
+		if(is_object($item)){ //l'oggetto figlio potrebbe avere un modello diverso
+			$rows=$item->$types();
+			$row=$rows->getRelated();
+		}else{ 
+			$rows=null;
+			$row=xotModel($container);
+		}
+		$panel=StubService::getByModel($row,'panel');
+		$panel->setRow($row);
+		$panel->setRows($rows);
+		return ThemeService::view()
+			->with('row',$row)
+			->with('_panel',$panel)
+			;
+	}
+
 	public function edit(Request $request,$container,$item){
 		$panel=StubService::getByModel($item,'panel');
+		$types = camel_case(str_plural($container));
+		$route_params = \Route::current()->parameters();
+        list($containers,$items)=params2ContainerItem($route_params);
+        if(count($items)>1){
+        	$second_last_item=$items[count($items)-2];
+        	$rows=$second_last_item->$types();
+			$panel->setRows($rows);
+        }
+        $panel->setRow($item);
 		return ThemeService::view()
 				->with('row',$item)
 				->with('_panel',$panel)
@@ -160,31 +187,7 @@ trait CrudContainerItemNoPostTrait{
 	}
  
 
-	public function create(Request $request,$container,$item){
-		//$row=self::getXotModel($container);
-		$types = camel_case(str_plural($container));
-		if(is_object($item)){ //l'oggetto figlio potrebbe avere un modello diverso
-			$rows=$item->$types();
-			//debug_getter_obj(['obj'=>$rows]);
-			//getForeignKeyName	id_trasferte
-
-			$row=$rows->getRelated();
-		}else{ 
-			$rows=null;
-			$row=xotModel($container);
-		}
-		//ddd(get_class($row));//"Modules\Trasferte\Models\SpeseFuoriSede"
-		$panel=StubService::getByModel($row,'panel');
-		$panel->setRow($row);
-		$panel->setRows($rows);
-
-
-		//ddd($panel->fields());
-		return ThemeService::view()
-			->with('row',$row)
-			->with('_panel',$panel)
-			;
-	}
+	
 
 	public function formatData($params){
 		extract($params);
@@ -282,6 +285,7 @@ trait CrudContainerItemNoPostTrait{
 
 	public function show(Request $request,$container,$item){
 		$panel=StubService::getByModel($item,'panel');
+		$item=$panel->callAction($item,$request->_anact);
 		return ThemeService::view()
 			->with('row',$item)
 			->with('_panel',$panel)

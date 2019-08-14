@@ -1,6 +1,7 @@
 <?php
 namespace Modules\Extend\Services;
-
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Request;
 use Route;
 
 class RouteService{
@@ -470,6 +471,32 @@ class RouteService{
         $params['item'.$cont_i]=$row;
         $params['container'.($cont_i+1)]=$related_name;
         return route($routename,$params);
+    }
+
+    public static function urlAct($params){
+        $query=[];
+        extract($params);
+        $mutator=$act.'_url';
+        try{
+            $route=$row->$mutator;
+        }catch(\Exception $e){
+            $route='#';
+        }
+        $route_action = \Route::currentRouteAction();
+        $old_act=Str::snake(Str::after($route_action,'@'));
+        $routename=Request::route()->getName();
+        $old_act_route=last(explode('.',$routename));
+        
+        $routename_act=Str::before($routename,$old_act_route).''.$act;
+        $route_params=\Route::current()->parameters();
+        if(\Route::has($routename_act)){
+            $parz=array_merge($route_params,[$row]);
+            $parz=array_merge($parz,$query);
+            $route=route($routename_act,$parz);
+        }else{
+            $route='#'.$routename_act;
+        }
+        return $route;
     }
 
 
