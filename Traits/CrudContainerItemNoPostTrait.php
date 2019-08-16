@@ -134,7 +134,8 @@ trait CrudContainerItemNoPostTrait{
 		foreach($data1 as $k=>$v){
 			$func=$act.'Relationships'.$v->relationship_type; //updateRelationshipsMorphOne
 			//$this->$func(['model'=>$model,'name'=>$v->name,'data'=>$v->data]);
-			self::$func(['model'=>$model,'name'=>$v->name,'data'=>$v->data]);
+			$parz=array_merge($params,['model'=>$model,'name'=>$v->name,'data'=>$v->data]);
+			self::$func($parz);
 		}
 
 		if(isset($data['pivot'])){
@@ -213,6 +214,7 @@ trait CrudContainerItemNoPostTrait{
 			//$row=new $related_class;
 			$row=$related;
 		}else{ 
+			$rows=null;
 			$row=xotModel($container);
 		}
 
@@ -245,7 +247,7 @@ trait CrudContainerItemNoPostTrait{
 			$item_new=$panel->storeCallback(['row'=>$item_new,'data'=>$data]);
 		}
 		//*/
-		self::manageRelationships(['model'=>$item_new,'data'=>$data,'act'=>'store','container'=>$container,'item'=>$item,]);
+		self::manageRelationships(['model'=>$item_new,'data'=>$data,'act'=>'store','container'=>$container,'item'=>$item,'rows'=>$rows]);
 
 		\Session::flash('status', 'aggiornato! ['.$row->getKey().']!'); //.implode(',',$row->getChanges())
         //return view('xot::test');// 4 debug
@@ -273,10 +275,21 @@ trait CrudContainerItemNoPostTrait{
 		$model->$name()->save($row_linked);
 		*/
 		foreach($data as $k => $v){
-			if(!isset($v['pivot']['auth_user_id']) && \Auth::check() ){
-				$v['pivot']['auth_user_id']=\Auth::user()->auth_user_id;
+			if(is_array($v)){
+				if(!isset($v['pivot'])) $v['pivot']=[];
+				if(!isset($v['pivot']['auth_user_id']) && \Auth::check() ){
+					$v['pivot']['auth_user_id']=\Auth::user()->auth_user_id;
+				}
+				$model->$name()->syncWithoutDetaching([$k=>$v['pivot']]);
+			}else{
+				/*
+				$rows1=$model->$name();
+				$related=$rows1->getRelated();
+				ddd($related);
+				//ddd($params);
+				*/
+				//$model->$name()->attach()
 			}
-			$model->$name()->syncWithoutDetaching([$k=>$v['pivot']]);
 		}
 	}
 	

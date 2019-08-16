@@ -3,6 +3,9 @@ namespace Modules\Extend\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Str;
+
 //use File;
 //---- services --
 use Modules\Theme\Services\ThemeService;

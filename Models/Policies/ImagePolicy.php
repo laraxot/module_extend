@@ -11,5 +11,9 @@ use Modules\Xot\Traits\XotBasePolicyTrait;
 use Modules\Xot\Models\Policies\XotBasePolicy;
 
 class ImagePolicy extends XotBasePolicy{
+
+	public function store(User $user,$post){
+		return true; //da aggiungere pezzi
+	}
     
 }
