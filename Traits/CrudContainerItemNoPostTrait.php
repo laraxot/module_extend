@@ -351,6 +351,7 @@ trait CrudContainerItemNoPostTrait{
 
 
 	public function indexEdit(Request $request,$container,$item){
+		//ddd($request->getMethod());
 		if($request->getMethod()=='POST'){
 			return $this->indexUpdate($request,$container,$item);
 		}
@@ -391,14 +392,33 @@ trait CrudContainerItemNoPostTrait{
 
 	public function indexUpdateRelationshipsMorphToMany($params){
 		extract($params);
-		///*
+		//ddd($data);
+		/*
 		$auth_user_id=\Auth::user()->auth_user_id;
 		$data=collect($data)->map(function($item) use($auth_user_id){
 			$item['auth_user_id']=$auth_user_id;
 			return $item;
 		})->all();
-		//*/
 		$res=$model->$name()->syncWithoutDetaching($data);
+		//*/
+		foreach($data as $k => $v){
+			if(is_array($v)){
+				if(!isset($v['pivot'])) $v['pivot']=[];
+				if(!isset($v['pivot']['auth_user_id']) && \Auth::check() ){
+					$v['pivot']['auth_user_id']=\Auth::user()->auth_user_id;
+				}
+				$model->$name()->syncWithoutDetaching([$k=>$v['pivot']]);
+			}else{
+				ddd('to do-- ovvero da fare');
+				/*
+				$rows1=$model->$name();
+				$related=$rows1->getRelated();
+				ddd($related);
+				//ddd($params);
+				*/
+				//$model->$name()->attach()
+			}
+		}
 	}
 
 	public function saveMultiselectTwoSides(Request $request,$container,$item){ //passo request o direttamente data ?
