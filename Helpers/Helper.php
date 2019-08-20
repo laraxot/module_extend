@@ -315,7 +315,11 @@ if (!\function_exists('transFields')) {
         $attributes=$params;
         $attrs_default=['class' => 'form-control','placeholder'=>$ris->placeholder];
         $ris->attributes=collect(array_merge($attrs_default, $attributes))
-                        ->only('class','placeholder','readonly')->all();
+                        ->filter(function($item,$key){
+                            return in_array($key,['class','placeholder','readonly']) || Str::startsWith($key,'data-');
+                        })
+                        //->only('class','placeholder','readonly')
+                        ->all();
         $ris->params=$params;
         return $ris;
     }
