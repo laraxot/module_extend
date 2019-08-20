@@ -298,7 +298,13 @@ trait CrudContainerItemNoPostTrait{
 
 	public function show(Request $request,$container,$item){
 		$panel=StubService::getByModel($item,'panel');
-		$item=$panel->callAction($item,$request->_anact);
+		if(is_object($item)){
+			$panel->callAction($item,$request->_act);
+			if($panel->force_exit){
+				return $panel->out;
+			}
+		}
+		
 		return ThemeService::view()
 			->with('row',$item)
 			->with('_panel',$panel)

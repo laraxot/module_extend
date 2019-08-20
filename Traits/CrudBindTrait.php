@@ -11,10 +11,9 @@ use Modules\Extend\Services\ScoutService;
 //use Laravel\Scout\Searchable;
 // il crud simple non ha il lock sui record, ne salva e continua, salva ed esci, ne esci e basta
 
-trait CrudBindTrait
-{
-    public function getModel()
-    {
+trait CrudBindTrait{
+    
+    public function getModel(){
         $rc = new \ReflectionClass(\get_class($this));
         $namespace = $rc->getNamespaceName();
         $str = 'Controllers';
@@ -28,8 +27,7 @@ trait CrudBindTrait
         return new $model();
     }
 
-    public function getBindVar()
-    {
+    public function getBindVar(){
         $class = class_basename(__CLASS__);
         $class = \str_replace('Controller', '', $class);
         $class = \mb_strtolower($class);
@@ -37,8 +35,7 @@ trait CrudBindTrait
         return $class;
     }
 
-    public function index(Request $request)
-    {
+    public function index(Request $request){
         if ($request->act=='routelist') {
             return ArtisanTrait::exe('route:list');
         }
