@@ -39,12 +39,7 @@ class DummyClass extends XotBasePanel {
 	*
 	* @var array
 	*/
-<<<<<<< HEAD
-	public static function with()
-	{
-=======
 	public static function with(){
->>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
 	  return [];
 	}
 
@@ -116,12 +111,7 @@ class DummyClass extends XotBasePanel {
 
 
 
-<<<<<<< HEAD
-	public static function fields()
-	{
-=======
 	public static function fields(){
->>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
 		return dummy_fields;
 	}
 	 
@@ -144,12 +134,7 @@ class DummyClass extends XotBasePanel {
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return array
 	 */
-<<<<<<< HEAD
-	public function cards(Request $request)
-	{
-=======
 	public function cards(Request $request){
->>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
 		return [];
 	}
 
@@ -159,12 +144,7 @@ class DummyClass extends XotBasePanel {
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return array
 	 */
-<<<<<<< HEAD
-	public function filters(Request $request=null)
-	{
-=======
 	public function filters(Request $request=null){
->>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
 		return [];
 	}
 
@@ -174,12 +154,7 @@ class DummyClass extends XotBasePanel {
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return array
 	 */
-<<<<<<< HEAD
-	public function lenses(Request $request)
-	{
-=======
 	public function lenses(Request $request){
->>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
 		return [];
 	}
 
@@ -189,12 +164,7 @@ class DummyClass extends XotBasePanel {
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return array
 	 */
-<<<<<<< HEAD
-	public function actions(Request $request=null)
-	{
-=======
 	public function actions(Request $request=null){
->>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
 		return [];
 	}
 

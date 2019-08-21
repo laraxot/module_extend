@@ -1,11 +1,7 @@
 <?php
 namespace Modules\Extend\Services;
-<<<<<<< HEAD
-
-=======
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Request;
->>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
 use Route;
 
 class RouteService{
@@ -338,11 +334,7 @@ class RouteService{
         $routename = \Route::currentRouteName(); 
         extract($params);
         $act=last(explode('.',$routename));
-<<<<<<< HEAD
-        if($act=='edit') $act='index_edit';
-=======
         if(in_array($act,['edit','index_edit'])) $act='index_edit';
->>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
         else $act='index';
         //*
         $tmp=[];
@@ -381,11 +373,8 @@ class RouteService{
     public static function tabs($params){
         extract($params);
         $params = \Route::current()->parameters();
-<<<<<<< HEAD
-=======
         $routename = \Route::currentRouteName();
         $act=last(explode('.',$routename)); 
->>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
         list($containers,$items)=params2ContainerItem($params); 
         $n_items=count($items);
         $item_last=last($items);
@@ -394,8 +383,6 @@ class RouteService{
 
 
         $cont_i=RouteService::containerN(['model'=>$model]);
-<<<<<<< HEAD
-=======
         //ddd($routename);
         if($cont_i==0){
             $tmp1=new \stdClass();
@@ -407,7 +394,6 @@ class RouteService{
             $tmp1->active=($routename==$tmp1->routename);
             $tabs[]=$tmp1;
         }
->>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
         //echo('[ '.$model.']['.$cont_i.']');
 
         if(isset($params['item'.$cont_i]) ) {
@@ -454,8 +440,6 @@ class RouteService{
         return route($routename,$params);
     }
 
-<<<<<<< HEAD
-=======
     public static function routenameN($params){
         //--- default data
         $routename = \Route::currentRouteName();
@@ -515,6 +499,5 @@ class RouteService{
         return $route;
     }
 
->>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
 
 }

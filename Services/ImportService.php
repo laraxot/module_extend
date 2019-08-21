@@ -199,11 +199,7 @@ class ImportService
             if (isset($proxy)) {
                 echo '<h3>Proxy :'.$proxy.'</h3>';
             }
-<<<<<<< HEAD
-            echo '<h3>getRequest ['.$url.']</h3>';
-=======
             echo '['.__LINE__.']['.__FILE__.']<h3>getRequest ['.$url.']</h3>';
->>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
             echo '<pre>';
             \print_r($e->getRequest());
             echo '</pre>';
