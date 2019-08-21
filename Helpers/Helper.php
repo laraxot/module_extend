@@ -281,6 +281,9 @@ if (!\function_exists('tenantConfig')) {
 if (!\function_exists('transFields')) {
     function transFields($params){
         extract($params);
+        if(isset($attributes)){
+            extract($attributes);
+        }
         $ris=new \stdClass();
 
         $start=0;
