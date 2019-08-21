@@ -1,11 +1,15 @@
 <?php
+<<<<<<< HEAD
 
+=======
+>>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
 namespace DummyNamespace;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
 use NamespacedDummyUserModel as User;
 use NamespacedDummyModel as Post; 
 
+<<<<<<< HEAD
 use Modules\Xot\Traits\XotBasePolicyTrait;
 
 class DummyClass
@@ -170,4 +174,9 @@ class DummyClass
     {
         //
     }
+=======
+use Modules\Xot\Models\Policies\XotBasePolicy;
+
+class DummyClass extends XotBasePolicy {
+>>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
 }

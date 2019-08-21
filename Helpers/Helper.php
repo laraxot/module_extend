@@ -302,7 +302,11 @@ if (!\function_exists('transFields')) {
             $ris->$tf=isset($$tf)?$$tf:trans($trans);
             if($ris->$tf == $trans) $ris->$tf='';
         }
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
         /*
         $trans=$view_noact.'.field.'.$name;
         $ris->label=isset($label)?$label:trans($trans);
@@ -315,7 +319,15 @@ if (!\function_exists('transFields')) {
         $attributes=$params;
         $attrs_default=['class' => 'form-control','placeholder'=>$ris->placeholder];
         $ris->attributes=collect(array_merge($attrs_default, $attributes))
+<<<<<<< HEAD
                         ->only('class','placeholder')->all();
+=======
+                        ->filter(function($item,$key){
+                            return in_array($key,['class','placeholder','readonly']) || Str::startsWith($key,'data-');
+                        })
+                        //->only('class','placeholder','readonly')
+                        ->all();
+>>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
         $ris->params=$params;
         return $ris;
     }
@@ -337,6 +349,19 @@ if (!\function_exists('debug_getter_obj')){
                 'getShortestName',
                 'getFullQualifiedName',
                 'getQuotedName',
+<<<<<<< HEAD
+=======
+                //---
+                'getAttribute',
+                'getAttributeValue',
+                'getRelationValue',
+                'getGlobalScope',
+                'getActualClassNameForMorph',
+                'getRelation',
+                //---------
+                'getDataStartAttribute',
+                'getDataAttribute',
+>>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
                 //--altri errori --
             ];
             return (Str::startsWith($item,'get')  && !in_array($item,$exclude)  );

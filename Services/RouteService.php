@@ -1,6 +1,11 @@
 <?php
 namespace Modules\Extend\Services;
+<<<<<<< HEAD
 
+=======
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Request;
+>>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
 use Route;
 
 class RouteService{
@@ -333,7 +338,11 @@ class RouteService{
         $routename = \Route::currentRouteName(); 
         extract($params);
         $act=last(explode('.',$routename));
+<<<<<<< HEAD
         if($act=='edit') $act='index_edit';
+=======
+        if(in_array($act,['edit','index_edit'])) $act='index_edit';
+>>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
         else $act='index';
         //*
         $tmp=[];
@@ -372,6 +381,11 @@ class RouteService{
     public static function tabs($params){
         extract($params);
         $params = \Route::current()->parameters();
+<<<<<<< HEAD
+=======
+        $routename = \Route::currentRouteName();
+        $act=last(explode('.',$routename)); 
+>>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
         list($containers,$items)=params2ContainerItem($params); 
         $n_items=count($items);
         $item_last=last($items);
@@ -380,6 +394,20 @@ class RouteService{
 
 
         $cont_i=RouteService::containerN(['model'=>$model]);
+<<<<<<< HEAD
+=======
+        //ddd($routename);
+        if($cont_i==0){
+            $tmp1=new \stdClass();
+            if($act=='index_edit') $act='edit';
+            if($act=='index') $act='show';
+            $tmp1->title=$act;
+            $tmp1->routename=(in_admin()?'admin.':'').'container0.'.$act;
+            $tmp1->url=route($tmp1->routename,$params);
+            $tmp1->active=($routename==$tmp1->routename);
+            $tabs[]=$tmp1;
+        }
+>>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
         //echo('[ '.$model.']['.$cont_i.']');
 
         if(isset($params['item'.$cont_i]) ) {
@@ -426,5 +454,67 @@ class RouteService{
         return route($routename,$params);
     }
 
+<<<<<<< HEAD
+=======
+    public static function routenameN($params){
+        //--- default data
+        $routename = \Route::currentRouteName();
+        $act=last(explode('.',$routename)); 
+        extract($params);
+        $tmp=[];
+        if(in_admin()) $tmp[]='admin';
+        for($i=0;$i<=$n;$i++){ $tmp[]='container'.$i; }
+        $tmp[]=$act;
+        $routename=implode('.',$tmp);
+        return $routename;
+    }
+
+    /**
+    * in = row , related
+    *
+    **/
+
+    public static function urlRelated($params){
+        extract($params);
+        $params = \Route::current()->parameters();
+        $cont_i=RouteService::containerN(['model'=>get_class($row)]);
+        $routename=RouteService::routenameN(['n'=>$cont_i+1,'act'=>$act]);
+        $row_name=collect(config('xra.model'))->search(get_class($row));
+        
+        //$related_name=collect(config('xra.model'))->search(get_class($related));
+
+        $params['container'.$cont_i]=$row_name;
+        $params['item'.$cont_i]=$row;
+        $params['container'.($cont_i+1)]=$related_name;
+        return route($routename,$params,false);
+    }
+
+    public static function urlAct($params){
+        $query=[];
+        extract($params);
+        $mutator=$act.'_url';
+        try{
+            $route=$row->$mutator;
+        }catch(\Exception $e){
+            $route='#';
+        }
+        $route_action = \Route::currentRouteAction();
+        $old_act=Str::snake(Str::after($route_action,'@'));
+        $routename=Request::route()->getName();
+        $old_act_route=last(explode('.',$routename));
+        
+        $routename_act=Str::before($routename,$old_act_route).''.$act;
+        $route_params=\Route::current()->parameters();
+        if(\Route::has($routename_act)){
+            $parz=array_merge($route_params,[$row]);
+            $parz=array_merge($parz,$query);
+            $route=route($routename_act,$parz);
+        }else{
+            $route='#'.$routename_act;
+        }
+        return $route;
+    }
+
+>>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
 
 }

@@ -17,8 +17,13 @@
 @endforeach
 </div>
 <div class="col-sm-4 col-md-4">
+<<<<<<< HEAD
 	<button type="button" class="btn btn-red" data-toggle="modal" data-target="#myModalAjax" data-title="rate it" data-href="{{ $rating_url }}">
 		<span class="font-white"><i class="fa fa-star"></i> Vota !</span>
+=======
+	<button type="button" class="btn btn-red btn-danger" data-toggle="modal" data-target="#myModalAjax" data-title="rate it" data-href="{{ $rating_url }}">
+		<span class="font-white"><i class="fa fa-star"></i> Vota !!</span>
+>>>>>>> a458e191a3743129d970e46164b7bc0ce6151598
 	</button>
 </div>
 </div>
