@@ -9,26 +9,35 @@ use Illuminate\Support\Facades\Storage;
 
 class StubService{
 
+	//-- model (object) or class (string)
+	//-- stub_name name of stub 
+	//-- create yes or not
+	
 	public static function missingClass($params){
 		extract($params);
 		$class_name=class_basename($class);
 		$class_ns=substr($class, 0,-(strlen($class_name)+1));
 		$params['class_name']=$class_name;
 		$params['namespace']=$class_ns;
+		$params['namespace_root']=substr($params['namespace'], 0,-(strlen('Models')+1));
+		/*
+		if(!isset($model)){ // Cannot instantiate abstract class Modules\Food\Models\BaseModel
+			$model=new $class;
+			$params['model']=$model;
+		}
+		*/
 		//$params['dir']=realpath(__DIR__.'/../..');
-		$autoloader_reflector = new \ReflectionClass($model);
+		$autoloader_reflector = new \ReflectionClass($class);
+		//ddd($autoloader_reflector);
 		$class_file_name = $autoloader_reflector->getFileName();
 		$dir=dirname($class_file_name);
 		$params['dir']=$dir;
-		$params['dummy_id']=$model->getRouteKeyName();
+		//$params['dummy_id']=with(new $class)->getRouteKeyName();
+		$params['dummy_id']='';
 		$params['search']=[];
 		$params['fields']=[];
 		//ddd($params);
 		$stub_name=$stub;
-		$stub_file=__DIR__.'/../Console/stubs/'.$stub_name.'.stub';
-		$stub = File::get($stub_file);
-		$replace=self::replaces($params);
-		$stub=str_replace(array_keys($replace),array_values($replace),$stub);
 		switch($stub_name){
 			case 'migration_morph_pivot':
 				$file=$dir.'/../Database/Migrations/'.date('Y_m_d_Hi00').'_create_'.Str::snake($class_name).'_table.php';
@@ -41,10 +50,32 @@ class StubService{
                 	'model'=>$model,
             	]);
 			break;
+			case 'repository':
+				$file=$dir.'/../Repositories/'.$class_name.'Repository.php';
+				$params['namespace']=$params['namespace_root'].'\Repositories';
+				$params['class_name']=$params['class_name'].'Repository';
+			break;
 			default:
 				ddd('['.$stub_name.'] Unkwonn !');
 			break;
 		}
+
+		$class_full=$params['namespace'].'\\'.$params['class_name']; 
+		if(File::exists($file)){
+			return $class_full;
+		}
+		/*
+		if(class_exists($class_full)){ //Cannot instantiate abstract class Modules\Food\Models\BaseModel
+			return $class_full;
+		}
+		*/
+
+
+
+		$stub_file=__DIR__.'/../Console/stubs/'.$stub_name.'.stub';
+		$stub = File::get($stub_file);
+		$replace=self::replaces($params);
+		$stub=str_replace(array_keys($replace),array_values($replace),$stub);
 
 		//ddd($file);
 
@@ -52,6 +83,7 @@ class StubService{
 		//ddd($autoloader_reflector);
 		//ddd($params);
 		//
+
 		File::put($file,$stub);
 		$msg=(' ['.$class.'] is under creating , refresh page');
 
@@ -106,7 +138,7 @@ class StubService{
         	'dummy_search' => var_export($search,true),
         	'dummy_fields' => var_export($fields,true),
         	'NamespacedDummyUserModel' => 'Modules\LU\Models\User',
-        	'NamespacedDummyModel'=> get_class($model),
+        	'NamespacedDummyModel'=> $class,
 
         ];
         return $replaces;
