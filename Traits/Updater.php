@@ -1,26 +1,15 @@
 <?php
 namespace Modules\Extend\Traits;
-
 use Carbon\Carbon;
 
-// /laravel/app/Updater.php
-//camel_case() 'foo_bar' fooBar
-//kebab_case() 'fooBar'  foo-bar
-//snake_case() 'fooBar' foo_bar
-//studly_case() 'foo_bar' FooBar
-//title_case() 'a nice title uses the correct case'
+trait Updater {
 
-trait Updater
-{
-    public function myLog()
-    {
+    public function myLog(){
         $mylog_path = \mb_substr(\get_class($this), 0, -\mb_strlen(class_basename($this))).'Mylog';
-
         return $this->hasMany($mylog_path, 'id_tbl', 'id')->where('tbl', $this->table)->whereRaw('id_approvaz!=""');
     }
 
-    public function cambiaStato($stato)
-    {
+    public function cambiaStato($stato){
         if ('' == $stato) {
             $stato = 1;
         }
@@ -44,10 +33,12 @@ trait Updater
         return $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
     }
 
-    protected static function boot()
-    {
+    protected static function boot(){
         parent::boot();
-        /* * During a model create Eloquent will also update the updated_at field so * need to have the updated_by field here as well * */
+        /**
+        * During a model create Eloquent will also update the updated_at field so 
+        * need to have the updated_by field here as well 
+        **/
         static::creating(function ($model) {
             if (null != \Auth::user()) {
                 $model->created_by = \Auth::user()->handle;
@@ -61,10 +52,10 @@ trait Updater
             }
         });
         //-------------------------------------------------------------------------------------
-        /*
-         * Deleting a model is slightly different than creating or deleting. For
-         * deletes we need to save the model first with the deleted_by field
-         * */
+        /**
+         * Deleting a model is slightly different than creating or deleting. 
+         * For deletes we need to save the model first with the deleted_by field
+        **/
         /*
         static::deleting(function ($model) {
             $model->deleted_by = \Auth::user()->handle;
@@ -72,23 +63,6 @@ trait Updater
         });
         */
         //----------------------
-    }
-
-    //end function boot
+    }//end function boot
 }//end trait Updater
 
-/*
-use App\Updater;
-
-
-
-http://www.extjstips.com/2015/10/10/laravel-5-created_by-updated_by-and-deleted_by/
-
-
-Event::listen(['eloquent.saved: *', 'eloquent.created: *'], function() {
-        //
- });
-
-https://laracasts.com/discuss/channels/eloquent/listen-to-any-saveupdatecreate-event-for-any-model
-
-*/
