@@ -1,0 +1,1 @@
+@include('extend::layouts.default.common.action_ajax')
